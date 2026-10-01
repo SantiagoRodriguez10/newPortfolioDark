@@ -1,0 +1,24 @@
+---
+interface Props {
+    number?: string;
+    className?: string;
+}
+
+const { number, className = "" } = Astro.props;
+---
+
+<div
+    class={`mb-12 flex items-center gap-4 border-b border-white/10 pb-5 ${className}`}
+>
+    {
+        number && (
+            <span class="font-mono text-xs tracking-[0.2em] text-[#B8F36B]">
+                {number}
+            </span>
+        )
+    }
+
+    <h2 class="text-sm font-medium uppercase tracking-[0.18em] text-[#F5F3EB]">
+        <slot />
+    </h2>
+</div>

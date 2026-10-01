@@ -1,0 +1,234 @@
+---
+const currentYear = new Date().getFullYear();
+---
+
+<footer class="mt-32 border-t border-white/10 md:mt-44">
+  <div class="mx-auto w-full max-w-6xl px-6 py-16 md:px-10 md:py-24">
+    <!-- CTA -->
+    <div
+      class="grid gap-8 border-b border-white/10 pb-12 sm:pb-16 lg:grid-cols-[minmax(0,1fr)_auto] lg:items-end lg:gap-12"
+      data-footer-content
+    >
+      <div>
+        <p
+          class="mb-4 text-xs font-medium uppercase tracking-[0.2em] text-[#B8F36B]"
+        >
+          Let's work together
+        </p>
+
+        <h2
+          class="max-w-3xl text-[2.75rem] font-medium leading-[0.98] tracking-[-0.055em] text-[#F5F3EB] sm:text-6xl lg:text-[4rem] xl:text-7xl"
+        >
+          Have something
+          <span class="block text-[#B8F36B]">in mind?</span>
+        </h2>
+      </div>
+
+      <a href="mailto:santiagorodriguezardini@gmail.com" class="contact-button">
+        Get in touch
+
+        <span aria-hidden="true">↗</span>
+      </a>
+    </div>
+
+    <!-- Bottom -->
+    <div
+      class="flex flex-col gap-8 pt-8 text-sm text-[#777970] md:flex-row md:items-center md:justify-between"
+    >
+      <div>
+        <p class="font-medium text-[#F5F3EB]">Santiago Rodriguez</p>
+
+        <p class="mt-1">
+          Frontend Developer · © {currentYear}
+        </p>
+      </div>
+
+      <div class="flex flex-wrap items-center gap-x-6 gap-y-4">
+        <a
+          href="https://www.linkedin.com/in/santiago2001/"
+          target="_blank"
+          rel="noopener noreferrer"
+          class="footer-link"
+        >
+          LinkedIn ↗
+        </a>
+
+        <a
+          href="https://github.com/SantiagoRodriguez10"
+          target="_blank"
+          rel="noopener noreferrer"
+          class="footer-link"
+        >
+          GitHub ↗
+        </a>
+
+        <button
+          type="button"
+          data-back-to-top
+          class="back-to-top"
+          aria-label="Back to top"
+        >
+          Back to top
+          <span aria-hidden="true">↑</span>
+        </button>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<script>
+  import { animate, inView } from "motion";
+
+  function initFooter() {
+    const footer = document.querySelector<HTMLElement>(
+      "[data-footer-content]"
+    );
+
+    const backToTop = document.querySelector<HTMLButtonElement>(
+      "[data-back-to-top]"
+    );
+
+    const reduceMotion = window.matchMedia(
+      "(prefers-reduced-motion: reduce)"
+    ).matches;
+
+    // Animación de entrada del Footer
+    if (footer && !reduceMotion) {
+      footer.style.opacity = "0";
+      footer.style.transform = "translateY(30px)";
+
+      inView(
+        footer,
+        () => {
+          animate(
+            footer,
+            {
+              opacity: 1,
+              y: 0,
+            },
+            {
+              duration: 0.7,
+              ease: "easeOut",
+            }
+          );
+        },
+        {
+          amount: 0.2,
+        }
+      );
+    }
+
+    // Botón Back to top
+    if (backToTop) {
+      backToTop.onclick = () => {
+        const prefersReducedMotion = window.matchMedia(
+          "(prefers-reduced-motion: reduce)"
+        ).matches;
+
+        window.scrollTo({
+          top: 0,
+          behavior: prefersReducedMotion ? "auto" : "smooth",
+        });
+      };
+    }
+  }
+
+  document.addEventListener("astro:page-load", initFooter);
+</script>
+
+<style>
+  .contact-button {
+    display: inline-flex;
+    width: fit-content;
+    align-items: center;
+    gap: 0.6rem;
+
+    padding: 0.85rem 1.25rem;
+
+    border-radius: 9999px;
+
+    background: #b8f36b;
+    color: #10110f;
+
+    font-size: 0.875rem;
+    font-weight: 600;
+
+    transition:
+      transform 200ms ease,
+      background 200ms ease,
+      gap 200ms ease;
+  }
+
+  .contact-button:hover {
+    background: #c6ff7c;
+    transform: translateY(-2px);
+    gap: 0.85rem;
+  }
+
+  .footer-link,
+  .back-to-top {
+    color: #b8b9b1;
+
+    transition: color 200ms ease;
+  }
+
+  .footer-link:hover,
+  .back-to-top:hover {
+    color: #f5f3eb;
+  }
+
+  .back-to-top {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+
+    padding: 0;
+    border: 0;
+    background: transparent;
+
+    font: inherit;
+    cursor: pointer;
+  }
+
+  .back-to-top span {
+    transition: transform 200ms ease;
+  }
+
+  .back-to-top:hover span {
+    transform: translateY(-3px);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    [data-footer-content] {
+      opacity: 1 !important;
+      transform: none !important;
+    }
+  }
+
+  .contact-button:focus-visible,
+.footer-link:focus-visible,
+.back-to-top:focus-visible {
+  outline: 2px solid #b8f36b;
+  outline-offset: 4px;
+  border-radius: 4px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  [data-footer-content] {
+    opacity: 1 !important;
+    transform: none !important;
+  }
+
+  .contact-button,
+  .footer-link,
+  .back-to-top,
+  .back-to-top span {
+    transition: none !important;
+  }
+
+  .contact-button:hover,
+  .back-to-top:hover span {
+    transform: none !important;
+  }
+}
+</style>

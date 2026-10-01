@@ -1,0 +1,55 @@
+---
+interface Props {
+  href: string;
+  target?: string;
+  rel?: string;
+  class?: string;
+}
+
+const {
+  href,
+  target,
+  rel,
+  class: className = "",
+} = Astro.props;
+---
+
+<a
+  href={href}
+  target={target}
+  rel={rel}
+  class={`social-pill group inline-flex max-w-fit items-center justify-center gap-2 rounded-full border border-white/10 bg-white/[0.03] px-4 py-2 text-sm font-medium text-[#F5F3EB] transition duration-300 focus:outline-none focus-visible:ring-2 focus-visible:ring-[#B8F36B] focus-visible:ring-offset-2 focus-visible:ring-offset-[#10110F] ${className}`}
+>
+  <slot />
+</a>
+
+<style>
+  .social-pill:hover {
+    background: rgba(255, 255, 255, 0.07);
+    border-color: rgba(184, 243, 107, 0.3);
+    transform: translateY(-2px);
+  }
+
+  .social-pill :global(svg) {
+    transition:
+      color 200ms ease,
+      transform 200ms ease;
+  }
+
+  .social-pill:hover :global(svg) {
+    color: #b8f36b;
+    transform: translateY(-1px);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .social-pill,
+    .social-pill :global(svg) {
+      transition: none;
+    }
+
+    .social-pill:hover,
+    .social-pill:hover :global(svg) {
+      transform: none;
+    }
+  }
+</style>

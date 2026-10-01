@@ -1,0 +1,112 @@
+---
+import Badge from "@/components/Badge.astro";
+import LinkedInIcon from "@/components/icons/LinkedIn.astro";
+import MailIcon from "@/components/icons/Mail.astro";
+import SocialPill from "@/components/SocialPill.astro";
+---
+
+<section class="hero max-w-5xl pb-10 pt-16 sm:pb-12 sm:pt-20 md:pt-24">
+  <div class="mb-8 flex items-center gap-3 sm:gap-4" data-hero-item>
+    <img
+      class="size-14 rounded-full border border-white/10 object-cover shadow-lg sm:size-16"
+      src="/santiPhoto.webp"
+      alt="Santiago Rodriguez"
+      width="64"
+      height="64"
+      fetchpriority="high"
+    />
+
+    <a
+      href="https://www.linkedin.com/in/santiago2001/"
+      target="_blank"
+      rel="noopener noreferrer"
+      class="rounded-full focus:outline-none focus-visible:ring-2 focus-visible:ring-[#B8F36B] focus-visible:ring-offset-2 focus-visible:ring-offset-[#10110F]"
+    >
+      <Badge>Open to work</Badge>
+    </a>
+  </div>
+
+  <p
+    class="mb-4 text-xs font-medium uppercase tracking-[0.18em] text-[#B8F36B] sm:text-sm sm:tracking-[0.22em]"
+    data-hero-item
+  >
+    Frontend developer · Argentina 🇦🇷
+  </p>
+
+  <h1
+    class="max-w-5xl text-[3.25rem] font-bold leading-[0.92] tracking-[-0.055em] text-[#F5F3EB] sm:text-7xl md:text-8xl lg:text-[6.5rem]"
+    data-hero-item
+  >
+    Building digital
+    <span class="block text-[#B8F36B]">experiences.</span>
+  </h1>
+
+  <p
+    class="mt-6 max-w-2xl text-base leading-7 text-[#B8B9B1] sm:mt-7 sm:text-lg sm:leading-8"
+    data-hero-item
+  >
+    I'm Santiago, a developer focused on building thoughtful interfaces, modern
+    web applications and digital experiences that combine design and technology.
+  </p>
+
+  <nav
+    aria-label="Contact and social links"
+    class="mt-8 flex flex-wrap items-center gap-3"
+    data-hero-item
+  >
+    <SocialPill href="mailto:santiagorodriguezardini@gmail.com">
+      <MailIcon class="size-4" />
+      Contact me
+    </SocialPill>
+
+    <SocialPill href="https://www.linkedin.com/in/santiago2001/">
+      <LinkedInIcon class="size-4" />
+      LinkedIn
+    </SocialPill>
+  </nav>
+</section>
+
+<style>
+  .hero {
+    font-family: "Onest Variable", sans-serif;
+  }
+
+  .hero h1 {
+    font-family: "Space Grotesk Variable", sans-serif;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .hero [data-hero-item] {
+      opacity: 1 !important;
+      transform: none !important;
+    }
+  }
+</style>
+
+<script>
+  import { animate, stagger } from "motion";
+
+  const hero = document.querySelector(".hero");
+  const items = hero?.querySelectorAll("[data-hero-item]");
+
+  const reduceMotion = window.matchMedia(
+    "(prefers-reduced-motion: reduce)",
+  ).matches;
+
+  if (hero && items?.length && !reduceMotion) {
+    /* hero.classList.add("hero-animated"); */
+
+    animate(
+      items,
+      {
+        opacity: [0, 1],
+        y: [20, 0],
+      },
+      {
+        duration: 0.7,
+        delay: stagger(0.12),
+        ease: "easeOut",
+      },
+    );
+  }
+</script>

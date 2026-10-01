@@ -1,0 +1,270 @@
+---
+const CLIENT_PROJECTS = [
+    {
+        title: "Carolina Balvorin",
+        category: "Legal services",
+        description:
+            "Professional website designed and developed for an independent lawyer, focused on presenting her services clearly and making it easy for potential clients to get in touch.",
+        services: ["UI Design", "Development", "Responsive"],
+        image: "/projects/carolina-balvorin.webp",
+        link: "",
+    },
+    {
+        title: "Gala & Lara",
+        category: "Consulting & Coaching",
+        description:
+            "Digital presence for a consulting and coaching business, designed to communicate their services, courses and approach through a modern and approachable experience.",
+        services: ["UI Design", "Development", "Course showcase"],
+        image: "/projects/gala-lara.webp",
+        link: "",
+    },
+];
+---
+
+<div>
+    <div
+        class="grid gap-8 border-b border-white/10 pb-10 sm:pb-12 lg:grid-cols-[1.2fr_0.8fr] lg:items-end lg:gap-16"
+        data-freelance-intro
+    >
+        <div>
+            <p
+                class="mb-4 text-xs font-medium uppercase tracking-[0.2em] text-[#B8F36B]"
+            >
+                Boganest · Freelance
+            </p>
+
+            <h3
+                class="max-w-3xl text-[2.25rem] font-medium leading-[1.08] tracking-[-0.045em] text-[#F5F3EB] sm:text-5xl lg:text-[3.25rem] xl:text-6xl"
+            >
+                Building digital experiences for
+                <span class="text-[#B8F36B]">real businesses.</span>
+            </h3>
+        </div>
+
+        <div>
+            <p class="max-w-lg text-base leading-7 text-[#B8B9B1]">
+                Through Boganest, I work with businesses and professionals to
+                turn their ideas into websites and digital products — from
+                understanding their needs and defining the experience to
+                development and deployment.
+            </p>
+
+            <a
+                href="https://www.boganest.com/"
+                target="_blank"
+                rel="noopener noreferrer"
+                class="boganest-link mt-6"
+            >
+                Visit Boganest
+
+                <span aria-hidden="true">↗</span>
+            </a>
+        </div>
+    </div>
+
+    <div class="mt-10 grid gap-10 sm:mt-14 md:grid-cols-2 md:gap-6 lg:gap-8">
+        {
+            CLIENT_PROJECTS.map((project, index) => (
+                <article class="client-project group" data-client-project>
+                    <div class="relative isolate overflow-hidden rounded-2xl border border-white/10 bg-[#1B1C18]">
+                        <div class="absolute left-3 top-3 z-10 rounded-full border border-white/10 bg-[#10110F]/80 px-2.5 py-1 font-mono text-[0.7rem] text-[#B8F36B] backdrop-blur-md sm:left-4 sm:top-4 sm:px-3 sm:py-1.5 sm:text-xs">
+                            CLIENT {String(index + 1).padStart(2, "0")}
+                        </div>
+
+                        <img
+                            src={project.image}
+                            alt={`Website developed for ${project.title}`}
+                            loading="lazy"
+                            width="800"
+                            height="500"
+                            class="aspect-[16/10] w-full object-cover object-top transition duration-700 ease-out group-hover:scale-[1.02]"
+                        />
+
+                        <div class="pointer-events-none absolute inset-0 bg-gradient-to-t from-[#10110F]/30 via-transparent to-transparent opacity-60" />
+                    </div>
+
+                    <div class="pt-6">
+                        <p class="text-xs font-medium uppercase tracking-[0.18em] text-[#B8F36B]">
+                            {project.category}
+                        </p>
+
+                        <h4 class="mt-2 text-2xl font-medium tracking-[-0.03em] text-[#F5F3EB] sm:text-3xl">
+                            {project.title}
+                        </h4>
+
+                        <p class="mt-4 max-w-xl text-sm leading-6 text-[#B8B9B1] sm:text-base sm:leading-7">
+                            {project.description}
+                        </p>
+
+                        <ul
+                            aria-label={`Services delivered for ${project.title}`}
+                            class="mt-5 flex flex-wrap gap-x-4 gap-y-2"
+                        >
+                            {project.services.map((service) => (
+                                <li class="flex items-center gap-2 text-xs text-[#B8B9B1]">
+                                    <span
+                                        class="size-1 rounded-full bg-[#B8F36B]"
+                                        aria-hidden="true"
+                                    />
+                                    {service}
+                                </li>
+                            ))}
+                        </ul>
+
+                        {project.link && (
+                            <a
+                                href={project.link}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                class="client-link mt-6"
+                            >
+                                View project
+                                <span aria-hidden="true">↗</span>
+                            </a>
+                        )}
+                    </div>
+                </article>
+            ))
+        }
+    </div>
+</div>
+
+<script>
+    import { animate, inView } from "motion";
+
+    const intro = document.querySelector<HTMLElement>("[data-freelance-intro]");
+
+    const projects = document.querySelectorAll<HTMLElement>(
+        "[data-client-project]",
+    );
+
+    const reduceMotion = window.matchMedia(
+        "(prefers-reduced-motion: reduce)",
+    ).matches;
+
+    if (!reduceMotion) {
+        // Animación del encabezado de Boganest
+        if (intro) {
+            intro.style.opacity = "0";
+            intro.style.transform = "translateY(30px)";
+
+            inView(
+                intro,
+                () => {
+                    animate(
+                        intro,
+                        {
+                            opacity: 1,
+                            y: 0,
+                        },
+                        {
+                            duration: 0.7,
+                            ease: "easeOut",
+                        },
+                    );
+                },
+                {
+                    amount: 0.2,
+                },
+            );
+        }
+
+        // Animación individual de cada proyecto
+        projects.forEach((project) => {
+            project.style.opacity = "0";
+            project.style.transform = "translateY(30px)";
+
+            inView(
+                project,
+                () => {
+                    animate(
+                        project,
+                        {
+                            opacity: 1,
+                            y: 0,
+                        },
+                        {
+                            duration: 0.65,
+                            ease: "easeOut",
+                        },
+                    );
+                },
+                {
+                    amount: 0.15,
+                },
+            );
+        });
+    }
+</script>
+
+<style>
+    .boganest-link,
+    .client-link {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.5rem;
+
+        color: #f5f3eb;
+        font-size: 0.875rem;
+        font-weight: 500;
+
+        transition:
+            color 200ms ease,
+            gap 200ms ease;
+    }
+
+    .boganest-link {
+        padding: 0.7rem 1rem;
+
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        border-radius: 9999px;
+    }
+
+    .boganest-link:hover,
+    .client-link:hover {
+        color: #b8f36b;
+        gap: 0.75rem;
+    }
+
+    .boganest-link:hover {
+        border-color: rgba(184, 243, 107, 0.3);
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+        [data-freelance-intro],
+        [data-client-project] {
+            opacity: 1 !important;
+            transform: none !important;
+        }
+    }
+
+    .boganest-link:focus-visible,
+    .client-link:focus-visible {
+        outline: 2px solid #b8f36b;
+        outline-offset: 4px;
+        border-radius: 4px;
+    }
+
+    @media (hover: hover) {
+        .client-project:hover h4 {
+            color: #b8f36b;
+        }
+    }
+
+    .client-project h4 {
+        transition: color 250ms ease;
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+        .boganest-link,
+        .client-link,
+        .client-project h4,
+        .client-project img {
+            transition: none !important;
+        }
+
+        .client-project:hover img {
+            transform: none !important;
+        }
+    }
+</style>

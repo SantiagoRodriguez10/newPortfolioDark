@@ -1,0 +1,90 @@
+---
+import ExperienceItem from "./ExperienceItem.astro";
+
+const EXPERIENCE = [
+  {
+    date: "2025 — Present",
+    title: "Freelance Developer",
+    company: "Independent",
+    description:
+      "Designing and developing digital products, websites and web applications for businesses and professionals. I work across the development process, from translating requirements into interfaces to implementation, optimization and deployment.",
+  },
+  {
+    date: "Jan 2023 — Feb 2025",
+    title: "Principal Frontend Developer",
+    company: "Vortex-it",
+    description:
+      "Collaborated on the planning, development and implementation of the software architecture of the company's main product. I also worked on frontend and backend applications using React and React Native for projects involving companies such as Carrefour and Banco Galicia.",
+  },
+  {
+    date: "Sep 2021 — Feb 2023",
+    title: "Frontend Professor & Mentor",
+    company: "CoderHouse",
+    description:
+      "Mentored more than 300 students throughout their frontend development training, providing complementary classes, technical guidance and detailed feedback on assignments and projects.",
+  },
+];
+---
+
+<ol class="experience-list">
+  {
+    EXPERIENCE.map((experience, index) => (
+      <li data-experience>
+        <ExperienceItem {...experience} index={index + 1} />
+      </li>
+    ))
+  }
+</ol>
+
+<script>
+  import { animate, inView } from "motion";
+
+  const experiences =
+    document.querySelectorAll<HTMLElement>("[data-experience]");
+
+  const reduceMotion = window.matchMedia(
+    "(prefers-reduced-motion: reduce)"
+  ).matches;
+
+  if (!reduceMotion) {
+    experiences.forEach((experience) => {
+      experience.style.opacity = "0";
+      experience.style.transform = "translateY(30px)";
+
+      inView(
+        experience,
+        () => {
+          animate(
+            experience,
+            {
+              opacity: 1,
+              y: 0,
+            },
+            {
+              duration: 0.65,
+              ease: "easeOut",
+            }
+          );
+        },
+        {
+          amount: 0.2,
+        }
+      );
+    });
+  }
+</script>
+
+<style>
+  .experience-list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    [data-experience] {
+      opacity: 1 !important;
+      transform: none !important;
+    }
+  }
+</style>

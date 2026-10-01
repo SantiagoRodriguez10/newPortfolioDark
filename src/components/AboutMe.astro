@@ -1,0 +1,174 @@
+---
+const personalImageAlt = "Santiago Rodriguez";
+---
+
+<article
+  class="grid min-w-0 items-center gap-12 lg:grid-cols-[minmax(0,1.2fr)_minmax(0,0.8fr)] lg:gap-16 xl:gap-24"
+>
+  <div data-about-content>
+    <p
+      class="max-w-3xl text-[1.65rem] font-medium leading-[1.2] tracking-[-0.035em] text-[#F5F3EB] sm:text-3xl lg:text-[2rem] xl:text-4xl"
+    >
+      I enjoy turning ideas into
+      <span class="text-[#B8F36B]">digital products</span>
+      that feel simple, intentional and useful.
+    </p>
+
+    <div class="mt-8 max-w-2xl space-y-5 text-base leading-7 text-[#B8B9B1]">
+      <p>
+        My main focus is frontend development, working primarily with React,
+        TypeScript and modern web technologies. I care about the details that
+        make an interface feel polished — from its structure and responsiveness
+        to performance and interaction.
+      </p>
+
+      <p>
+        I also enjoy being involved beyond the code: understanding the problem,
+        thinking about the user experience and turning an idea into something
+        that can actually be shipped and used.
+      </p>
+    </div>
+
+    <div
+      class="mt-10 flex flex-wrap gap-x-8 gap-y-4 border-t border-white/10 pt-6"
+    >
+      <div>
+        <span class="block text-xs uppercase tracking-[0.18em] text-[#777970]">
+          Focus
+        </span>
+
+        <span class="mt-1 block text-sm text-[#F5F3EB]">
+          Frontend & Product
+        </span>
+      </div>
+
+      <div>
+        <span class="block text-xs uppercase tracking-[0.18em] text-[#777970]">
+          Stack
+        </span>
+
+        <span class="mt-1 block text-sm text-[#F5F3EB]">
+          React · TypeScript · Astro
+        </span>
+      </div>
+
+      <div>
+        <span class="block text-xs uppercase tracking-[0.18em] text-[#777970]">
+          From
+        </span>
+
+        <span class="mt-1 block text-sm text-[#F5F3EB]">
+          Córdoba, Argentina 🇦🇷
+        </span>
+      </div>
+    </div>
+  </div>
+
+  <div
+    class="relative mx-auto w-full max-w-[280px] sm:max-w-[340px] lg:ml-auto lg:max-w-sm"
+    data-about-image
+  >
+    <div
+      class="absolute -inset-3 -z-10 rotate-3 rounded-[2rem] border border-[#B8F36B]/20"
+      aria-hidden="true"
+    >
+    </div>
+
+    <div
+      class="group relative overflow-hidden rounded-[2rem] border border-white/10 bg-[#1B1C18]"
+    >
+      <img
+        width="500"
+        height="500"
+        src="/me.png"
+        alt={personalImageAlt}
+        loading="lazy"
+        class="aspect-[4/5] w-full object-cover grayscale-[15%] transition duration-700 ease-out group-hover:scale-[1.025] group-hover:grayscale-0"
+        style="object-position: 50% 50%;"
+      />
+
+      <div
+        class="pointer-events-none absolute inset-0 bg-gradient-to-t from-[#10110F]/30 via-transparent to-transparent"
+        aria-hidden="true"
+      >
+      </div>
+    </div>
+
+    <div
+      class="absolute -bottom-3 left-3 rounded-full border border-white/10 bg-[#10110F]/90 px-3 py-2 text-[0.7rem] font-medium text-[#B8F36B] backdrop-blur-md sm:-bottom-4 sm:-left-4 sm:px-4 sm:text-xs"
+    >
+      Building for the web
+    </div>
+  </div>
+</article>
+
+<script>
+  import { animate, inView } from "motion";
+
+  const content = document.querySelector<HTMLElement>("[data-about-content]");
+  const image = document.querySelector<HTMLElement>("[data-about-image]");
+
+  const reduceMotion = window.matchMedia(
+    "(prefers-reduced-motion: reduce)",
+  ).matches;
+
+  if (!reduceMotion && content && image) {
+    content.style.opacity = "0";
+    content.style.transform = "translateY(30px)";
+
+    image.style.opacity = "0";
+    image.style.transform = "translateY(30px) rotate(2deg)";
+
+    inView(
+      content,
+      () => {
+        animate(
+          content,
+          {
+            opacity: 1,
+            y: 0,
+          },
+          {
+            duration: 0.7,
+            ease: "easeOut",
+          },
+        );
+      },
+      {
+        amount: 0.2,
+      },
+    );
+
+    inView(
+      image,
+      () => {
+        animate(
+          image,
+          {
+            opacity: 1,
+            y: 0,
+            rotate: 0,
+          },
+          {
+            duration: 0.8,
+            ease: "easeOut",
+            delay: 0.1,
+          },
+        );
+      },
+      {
+        amount: 0.2,
+      },
+    );
+  }
+</script>
+
+<style>
+  @media (prefers-reduced-motion: reduce) {
+    [data-about-content],
+    [data-about-image] {
+      opacity: 1 !important;
+      transform: none !important;
+    }
+  }
+</style>

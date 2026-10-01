@@ -1,0 +1,157 @@
+---
+const navItems = [
+  {
+    title: "Experience",
+    mobileTitle: 'Exp.',
+    label: "experience",
+    url: "/#experience",
+  },
+  {
+    title: "Projects",
+    mobileTitle: 'Projects',
+    label: "projects",
+    url: "/#projects",
+  },
+  {
+    title: "Freelance",
+    mobileTitle: 'Work',
+    label: "freelance",
+    url: "/#freelance",
+  },
+  {
+    title: "About",
+    mobileTitle: 'About',
+    label: "about",
+    url: "/#about",
+  },
+];
+---
+
+<header
+  class="pointer-events-none fixed left-0 top-0 z-50 flex w-full justify-center px-3 pt-3 sm:px-4 sm:pt-4"
+>
+  <nav
+    aria-label="Main navigation"
+    class="pointer-events-auto flex max-w-full items-center gap-0.5 rounded-full border border-transparent px-1.5 py-1 text-xs text-[#B8B9B1] sm:gap-1 sm:px-2 sm:py-1.5 sm:text-sm"
+  >
+    {
+      navItems.map((link) => (
+        <a
+          class="nav-link relative rounded-full px-2.5 py-2 transition-colors duration-300 hover:text-[#F5F3EB] sm:px-3"
+          aria-label={link.label}
+          data-nav-link={link.label}
+          href={link.url}
+        >
+          <span class="sm:hidden">{link.mobileTitle}</span>
+          <span class="hidden sm:inline">{link.title}</span>
+        </a>
+      ))
+    }
+
+    <a
+      href="mailto:santiagorodriguezardini@gmail.com"
+      class="ml-1 hidden rounded-full bg-[#B8F36B] px-4 py-2 font-medium text-[#10110F] transition duration-300 hover:scale-[1.03] hover:bg-[#C6FF7C] sm:inline-flex"
+    >
+      Contact
+    </a>
+  </nav>
+</header>
+
+<script>
+  let observer: IntersectionObserver | undefined;
+
+  document.addEventListener("astro:page-load", () => {
+    observer?.disconnect();
+
+    const sections = document.querySelectorAll<HTMLElement>(
+      "section[data-section]"
+    );
+
+    const navLinks =
+      document.querySelectorAll<HTMLAnchorElement>("[data-nav-link]");
+
+    observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (!entry.isIntersecting) return;
+
+          navLinks.forEach((link) => {
+            const isActive =
+              link.dataset.navLink === (entry.target as HTMLElement).id;
+
+            link.classList.toggle("nav-active", isActive);
+          });
+        });
+      },
+      {
+        rootMargin: "-30% 0px -60% 0px",
+        threshold: 0,
+      }
+    );
+
+    sections.forEach((section) => observer?.observe(section));
+  });
+</script>
+
+<style>
+  nav {
+    animation: nav-background linear both;
+    animation-timeline: scroll();
+    animation-range: 0 120px;
+  }
+
+  .nav-link::after {
+    content: "";
+    position: absolute;
+
+    left: 50%;
+    bottom: 3px;
+
+    width: 4px;
+    height: 4px;
+
+    border-radius: 999px;
+
+    background: #b8f36b;
+
+    opacity: 0;
+    transform: translateX(-50%) scale(0);
+
+    transition:
+      opacity 200ms ease,
+      transform 200ms ease;
+  }
+
+  .nav-link.nav-active {
+    color: #f5f3eb;
+  }
+
+  .nav-link.nav-active::after {
+    opacity: 1;
+    transform: translateX(-50%) scale(1);
+  }
+
+  @keyframes nav-background {
+    from {
+      background: transparent;
+      border-color: transparent;
+      box-shadow: none;
+    }
+
+    to {
+      background: rgba(16, 17, 15, 0.8);
+      border-color: rgba(255, 255, 255, 0.1);
+      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+      backdrop-filter: blur(16px);
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    nav {
+      animation: none;
+      background: rgba(16, 17, 15, 0.9);
+      border-color: rgba(255, 255, 255, 0.1);
+      backdrop-filter: blur(16px);
+    }
+  }
+</style>

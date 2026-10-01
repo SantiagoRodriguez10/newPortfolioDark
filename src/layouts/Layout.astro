@@ -1,0 +1,174 @@
+---
+import "@fontsource-variable/onest";
+import "@fontsource-variable/space-grotesk";
+
+import Header from "../components/Header.astro";
+import Footer from "../components/Footer.astro";
+import { ViewTransitions } from "astro:transitions";
+
+interface Props {
+  title: string;
+  description: string;
+  image?: string;
+}
+
+const {
+  title,
+  description,
+  image = "/og-image.webp",
+} = Astro.props;
+
+const siteUrl = Astro.site ?? Astro.url;
+const canonicalURL = new URL(Astro.url.pathname, siteUrl);
+const socialImageURL = new URL(image, siteUrl);
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>{title}</title>
+    <meta name="description" content={description} />
+    <meta name="robots" content="index, follow" />
+
+    <!-- Canonical -->
+    <link rel="canonical" href={canonicalURL.href} />
+
+    <!-- Open Graph -->
+    <meta property="og:type" content="website" />
+    <meta property="og:locale" content="en_US" />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={canonicalURL.href} />
+    <meta property="og:image" content={socialImageURL.href} />
+    <meta
+      property="og:image:alt"
+      content="Santiago Rodriguez — Frontend Developer portfolio"
+    />
+
+    <!-- Twitter / X -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={title} />
+    <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content={socialImageURL.href} />
+
+    <!-- Browser -->
+    <meta name="theme-color" content="#10110F" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <meta name="generator" content={Astro.generator} />
+
+    <ViewTransitions />
+  </head>
+
+  <body>
+    <div class="site-background" aria-hidden="true"></div>
+
+    <a href="#main-content" class="skip-link">
+      Skip to content
+    </a>
+
+    <Header />
+
+    <slot />
+
+    <Footer />
+  </body>
+
+  <style is:global>
+    :root {
+      color-scheme: dark;
+
+      --color-bg: #10110f;
+      --color-surface: #1b1c18;
+      --color-surface-light: #252620;
+
+      --color-text: #f5f3eb;
+      --color-muted: #b8b9b1;
+
+      --color-accent: #b8f36b;
+      --color-border: rgba(255, 255, 255, 0.1);
+    }
+
+    html {
+      font-family: "Onest Variable", system-ui, sans-serif;
+      scroll-behavior: smooth;
+      background: var(--color-bg);
+    }
+
+    body {
+      position: relative;
+      min-height: 100vh;
+      margin: 0;
+      background: var(--color-bg);
+      color: var(--color-text);
+      overflow-x: hidden;
+    }
+
+    .site-background {
+      position: fixed;
+      inset: 0;
+      z-index: -1;
+      pointer-events: none;
+
+      background:
+        radial-gradient(
+          circle at 70% 10%,
+          rgba(184, 243, 107, 0.07),
+          transparent 30%
+        ),
+        radial-gradient(
+          circle at 10% 40%,
+          rgba(255, 255, 255, 0.025),
+          transparent 25%
+        ),
+        var(--color-bg);
+    }
+
+    h1,
+    h2,
+    h3,
+    h4 {
+      font-family: "Space Grotesk Variable", system-ui, sans-serif;
+    }
+
+    ::selection {
+      background: var(--color-accent);
+      color: var(--color-bg);
+    }
+
+    :focus-visible {
+      outline: 2px solid var(--color-accent);
+      outline-offset: 4px;
+    }
+
+    .skip-link {
+      position: fixed;
+      top: 1rem;
+      left: 1rem;
+      z-index: 100;
+      padding: 0.75rem 1rem;
+      border-radius: 0.5rem;
+      background: var(--color-accent);
+      color: var(--color-bg);
+      font-size: 0.875rem;
+      font-weight: 600;
+      transform: translateY(-200%);
+    }
+
+    .skip-link:focus {
+      transform: translateY(0);
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      html {
+        scroll-behavior: auto;
+      }
+
+      .skip-link {
+        transition: none;
+      }
+    }
+  </style>
+</html>

@@ -1,0 +1,290 @@
+---
+import GitHub from "./icons/GitHub.astro";
+import Typescript from "./icons/Typescript.astro";
+import ReactJS from "./icons/ReactJS.astro";
+import Tailwind from "./icons/Tailwind.astro";
+import Link from "./icons/Link.astro";
+
+const TAGS = {
+  REACT: {
+    name: "React",
+    icon: ReactJS,
+  },
+  TYPESCRIPT: {
+    name: "TypeScript",
+    icon: Typescript,
+  },
+  TAILWIND: {
+    name: "Tailwind CSS",
+    icon: Tailwind,
+  },
+};
+
+const PROJECTS = [
+  {
+    title: "GuitarLA",
+    eyebrow: "E-commerce",
+    description:
+      "An e-commerce experience for guitar enthusiasts featuring a persistent shopping cart, product management and a responsive interface.",
+    link: "https://guitarusereducer.netlify.app/",
+    github: "https://github.com/SantiagoRodriguez10/guitarla-ts",
+    image: "/projects/guitarla.webp",
+    tags: [TAGS.REACT, TAGS.TYPESCRIPT, TAGS.TAILWIND],
+  },
+  {
+    title: "Tip Calculator",
+    eyebrow: "Web application",
+    description:
+      "An interactive application for creating food orders and calculating tips dynamically through a simple and responsive interface.",
+    link: "https://calculadoradepropinascomun.netlify.app/",
+    image: "/projects/tipCalculator.webp",
+    tags: [TAGS.REACT, TAGS.TYPESCRIPT, TAGS.TAILWIND],
+  },
+  {
+    title: "Calorie Counter",
+    eyebrow: "Health tracker",
+    description:
+      "A calorie tracking application for recording meals and exercise, calculating the balance between consumed and burned calories.",
+    link: "https://caloriescc.netlify.app/",
+    image: "/projects/CalorieCounter.webp",
+    tags: [TAGS.REACT, TAGS.TYPESCRIPT, TAGS.TAILWIND],
+  },
+  {
+    title: "UpTask",
+    eyebrow: "Project management",
+    description:
+      "A task management platform with authentication, roles, permissions, collaborative notes and an interactive project dashboard.",
+    image: "/projects/ComingSoon.webp",
+    tags: [TAGS.REACT, TAGS.TYPESCRIPT, TAGS.TAILWIND],
+  },
+];
+---
+
+<div class="space-y-28 md:space-y-36">
+  {
+    PROJECTS.map(
+      ({ image, title, eyebrow, description, tags, link, github }, index) => {
+        const projectNumber = String(index + 1).padStart(2, "0");
+        const reverse = index % 2 !== 0;
+
+        return (
+          <article
+            data-project
+            class={`group grid items-center gap-8 sm:gap-10 lg:grid-cols-2 lg:gap-16 xl:gap-20 ${
+              reverse ? "lg:[&>*:first-child]:order-2" : ""
+            }`}
+          >
+            <div class="project-image-wrapper w-full lg:max-w-none">
+              <div class="relative overflow-hidden rounded-2xl border border-white/10 bg-[#1B1C18]">
+                <div class="absolute left-3 top-3 z-10 rounded-full border border-white/10 bg-[#10110F]/80 px-2.5 py-1 font-mono text-[0.7rem] text-[#B8F36B] backdrop-blur-md sm:left-4 sm:top-4 sm:px-3 sm:py-1.5 sm:text-xs">
+                  {projectNumber}
+                </div>
+
+                <img
+                  src={image}
+                  alt={`Preview of ${title}`}
+                  loading={index === 0 ? "eager" : "lazy"}
+                  width="800"
+                  height="500"
+                  class="aspect-[16/10] w-full object-cover object-top transition duration-700 ease-out group-hover:scale-[1.02]"
+                />
+
+                <div class="pointer-events-none absolute inset-0 bg-gradient-to-t from-[#10110F]/20 to-transparent opacity-0 transition-opacity duration-500 group-hover:opacity-100" />
+              </div>
+            </div>
+
+            <div class="project-content lg:py-6">
+              <p class="mb-2.5 text-xs font-medium uppercase tracking-[0.18em] text-[#B8F36B] sm:mb-3 sm:tracking-[0.2em]">
+                {eyebrow}
+              </p>
+
+              <h3 class="text-[2.25rem] font-medium leading-none tracking-[-0.04em] text-[#F5F3EB] sm:text-5xl">
+                {title}
+              </h3>
+
+              <p class="mt-4 max-w-lg text-[0.95rem] leading-7 text-[#B8B9B1] sm:mt-5 sm:text-base">
+                {description}
+              </p>
+
+              <ul
+                aria-label={`Technologies used in ${title}`}
+                class="mt-6 flex flex-wrap gap-2"
+              >
+                {tags.map((tag) => (
+                  <li>
+                    <span class="tech-tag flex items-center gap-2 rounded-full border border-white/10 bg-white/[0.03] px-3 py-1.5 text-xs text-[#B8B9B1]">
+                      {" "}
+                      <tag.icon class="size-4" />
+                      {tag.name}
+                    </span>
+                  </li>
+                ))}
+              </ul>
+
+              {(link || github) && (
+                <div class="mt-8 flex flex-wrap gap-3">
+                  {link && (
+                    <a
+                      href={link}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      class="project-link project-link-primary"
+                    >
+                      <Link class="size-4" />
+                      Live site
+                    </a>
+                  )}
+
+                  {github && (
+                    <a
+                      href={github}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      class="project-link"
+                    >
+                      <GitHub class="size-5" />
+                      GitHub
+                    </a>
+                  )}
+                </div>
+              )}
+            </div>
+          </article>
+        );
+      },
+    )
+  }
+</div>
+
+<script>
+  import { animate, inView } from "motion";
+
+  const projects = document.querySelectorAll<HTMLElement>("[data-project]");
+
+  const reduceMotion = window.matchMedia(
+    "(prefers-reduced-motion: reduce)",
+  ).matches;
+
+  if (!reduceMotion) {
+    projects.forEach((project) => {
+      project.style.opacity = "0";
+      project.style.transform = "translateY(40px)";
+
+      inView(
+        project,
+        () => {
+          animate(
+            project,
+            {
+              opacity: 1,
+              y: 0,
+            },
+            {
+              duration: 0.7,
+              ease: "easeOut",
+            },
+          );
+        },
+        {
+          amount: 0.15,
+        },
+      );
+    });
+  }
+</script>
+
+<style>
+  .project-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    outline: none;
+
+    padding: 0.65rem 1rem;
+
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 9999px;
+
+    color: #f5f3eb;
+    font-size: 0.875rem;
+    font-weight: 500;
+
+    transition:
+      background 200ms ease,
+      border-color 200ms ease,
+      transform 200ms ease;
+  }
+
+  .project-link:hover {
+    background: rgba(255, 255, 255, 0.06);
+    border-color: rgba(255, 255, 255, 0.2);
+    transform: translateY(-2px);
+  }
+
+  .project-link-primary {
+    background: #b8f36b;
+    border-color: #b8f36b;
+    color: #10110f;
+  }
+
+  .project-link-primary:hover {
+    background: #c6ff7c;
+    border-color: #c6ff7c;
+  }
+
+  .project-link:focus-visible {
+    box-shadow:
+      0 0 0 2px #10110f,
+      0 0 0 4px #b8f36b;
+  }
+
+  .project-link :global(svg) {
+    transition: transform 200ms ease;
+  }
+
+  .project-link:hover :global(svg) {
+    transform: translateY(-1px);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    [data-project] {
+      opacity: 1 !important;
+      transform: none !important;
+    }
+
+    .project-link,
+    .project-link :global(svg),
+    .tech-tag,
+    .project-image-wrapper img {
+      transition: none !important;
+    }
+
+    .project-link:hover,
+    .project-link:hover :global(svg),
+    .project-image-wrapper:hover img {
+      transform: none !important;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    [data-project] {
+      opacity: 1 !important;
+      transform: none !important;
+    }
+  }
+
+  .tech-tag {
+    transition:
+      border-color 200ms ease,
+      color 200ms ease,
+      background 200ms ease;
+  }
+
+  @media (hover: hover) {
+    .tech-tag:hover {
+      color: #f5f3eb;
+      border-color: rgba(184, 243, 107, 0.25);
+      background: rgba(184, 243, 107, 0.05);
+    }
+  }
+</style>
